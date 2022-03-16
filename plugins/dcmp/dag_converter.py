@@ -440,9 +440,10 @@ return not skip
         
         err = None
         for _ in range(3):
-            shutil.rmtree(dcmp_settings.DAG_CREATION_MANAGER_DEPLOYED_DAGS_FOLDER, ignore_errors=True)
+            if os.path.exists(os.path.join(dcmp_settings.DAG_CREATION_MANAGER_DEPLOYED_DAGS_FOLDER, dag_name + ".py")):
+                os.remove(os.path.join(dcmp_settings.DAG_CREATION_MANAGER_DEPLOYED_DAGS_FOLDER, dag_name + ".py"))
             try:
-                shutil.copytree(tmp_dir, dcmp_settings.DAG_CREATION_MANAGER_DEPLOYED_DAGS_FOLDER)
+                shutil.copyfile(os.path.join(tmp_dir, dag_name + ".py"), os.path.join(dcmp_settings.DAG_CREATION_MANAGER_DEPLOYED_DAGS_FOLDER, dag_name + ".py"))
             except Exception as e:
                 err = e
                 sleep(1)
